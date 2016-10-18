@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>Image Mapping</title>
+</head>
+<body>
+<img src="asd.jpg" width ="600" height ="600" alt="test" usemap="#testmap">
+<map name="testmap">
+<area shape="rect" coords="0,0,82,145" color=black href="hello.html" alt="Hello">
+<area shape ="circle" coords="200,200,50" href="hismall.html" alt="this is small circle">
+<area shape ="circle" coords="400,400,100" href="hibig.html" alt="this is big circle">
+</map>
+</body>
+</html>
+
+
+

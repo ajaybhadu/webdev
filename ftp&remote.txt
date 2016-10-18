@@ -1,0 +1,356 @@
+IMPLEMENTATION OF FTP
+DATE:24.08.10
+
+Aim
+	To write a java program to demonstrate a simple FTP operation
+
+Hardware requirements:
+Intel pentium  Processor IV
+128mb RAM
+
+Software requirements:
+Jdk1.6.0
+
+Algorithm
+
+ FTP Client:
+
+Step 1:  Establish a connection with the server at a particular port
+Step 2:  Specify the name of the file to be read
+Step 3:  Receive the contents of the file from the server
+
+FTP Server:
+ 
+Step 1:  Accept the connection with the client
+Step 2:  Listen to the port for the name of the file to be sent
+Step 3:  Send the file character by character
+Step 4:  Terminate the connection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IMPLEMENTATION OF FTP
+
+SERVER PROGRAM:
+
+import java.io.*;
+import java.net.*;
+public class FtpServer
+{
+	public static void main(String args[])
+	{
+		try
+		{
+			ServerSocket ss=new ServerSocket(1000);
+			Socket s=ss.accept();
+			FileInputStream fin=new FileInputStream("Z:\\source.txt");
+			OutputStreamWriter out=new OutputStreamWriter(s.getOutputStream());
+			int i;
+			while(true)
+			{
+				i=fin.read();
+				out.write(i);
+				out.flush();
+				if(i==-1)
+					break;
+			}
+			s.close();
+			fin.close();
+			System.out.println("file sent successfully");
+		}
+		catch(IOException e)
+		{
+			System.out.println("exception"+e);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+CLIENT PROGRAM:
+
+import java.io.*;
+import java.net.*;
+class FTPClient
+{
+	public static void main(String args[])
+	{
+		try
+		{
+			Socket s=new Socket(InetAddress.getLocalHost(),1000);
+			FileOutputStream fout=new FileOutputStream("Z:\\destn.txt");
+			InputStreamReader in=new InputStreamReader(s.getInputStream());
+			int i;
+			while(true)
+			{
+				i=in.read();
+				if(i==-1|| i==63)
+					break;
+				fout.write(i);
+			}
+			s.close();
+			fout.close();
+			System.out.println("file received successful");
+		}
+		catch(IOException io)
+		{
+			System.out.println(io);
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Exception"+ex);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+OUTPUT:
+
+SERVER:
+
+
+
+
+CLIENT:
+
+
+
+
+
+
+
+
+
+
+
+SOURCE.TXT
+
+
+hi... welcome...
+
+DESTN.TXT
+
+hi... welcome...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RESULT:
+	Thus the file transfer protocol was implemented using TCP. 
+EX.NO:6(B)		REMOTE METHOD INVOCATON
+DATE:24.8.10
+
+AIM:
+	To write a client-server application using RMI.
+
+Hardware requirements:
+Intel pentium  Processor IV
+128mb RAM
+
+Software requirements:
+Jdk1.6.0
+
+ALGORITHM:
+
+Step 1: define a remote interfece.
+Step 2: write the client that uses the remote objects.
+Step 3: generating stubs(client proxies) and skeletons(server entities).
+Step 4: starting the registry and registering the object.
+Step 5: run the server and client.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+REMOTE METHOD INVOCATION
+
+PROGRAMS:
+
+(i) Interface program:
+
+import java.rmi.*;
+public interface HelloInterface extends Remote
+{
+	public String sayHello()throws RemoteException;
+}	
+
+(ii) Implementation program:
+
+import java.rmi.*;
+import java.rmi.server.*;
+public class HelloImpl extends UnicastRemoteObject implements HelloInterface 
+{
+	public HelloImpl()throws RemoteException
+	{
+		super();
+	}
+	public String sayHello()throws RemoteException
+	{
+		return "Hello RMI";
+	}
+}
+
+(iii) Server program:
+
+import java.rmi.*;
+import java.rmi.server.*;
+import java.net.*;
+public class HelloServer
+{
+	public static void main(String[] args)
+	{
+		try
+		{
+			HelloImpl remob=new HelloImpl();
+			Naming.rebind("/HelloServer",remob);
+		}
+		catch(MalformedURLException mue)
+		{
+			System.out.println("Exception caught : "+mue);
+		}
+		catch(RemoteException re)
+		{
+			System.out.println("Exception caught : "+re);
+		}
+	}
+}
+
+(iv) Client program:
+
+import java.rmi.*;
+import java.net.*;
+public class HelloClient
+{
+	public static void main(String[] args)
+	{
+		try
+		{
+			HelloInterface ref=(HelloInterface)Naming.lookup("/HelloServer");
+			String str=ref.sayHello();
+			System.out.println(str);
+		}
+		catch(RemoteException re)
+		{
+			System.out.println("Exception caught : "+re);
+		}
+		catch(NotBoundException nbe)
+		{
+			System.out.println("Exception caught : "+nbe);
+		}
+		catch(MalformedURLException mue)
+		{
+			System.out.println("Exception caught : "+mue);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+OUTPUT:
+
+SERVER SIDE:
+
+
+
+
+CLIENT SIDE:
+
+
+
+
+
+
+
+
+RESULT:
+                   Thus the program to demonstrate RMI was successfully executed and the output was verified.
+
